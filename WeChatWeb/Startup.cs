@@ -27,11 +27,8 @@ namespace WeChatWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddWeChatServices(new AppConfig()
-            {
-                AppId = Configuration["WeChat:AppId"],
-                AppSecret = Configuration["WeChat:AppSecret"]
-            });
+
+            services.AddWeChatServices(Configuration["WeChat:AppId"], Configuration["WeChat:AppSecret"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
 ﻿using Emma.WeChat.Global;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -15,14 +16,10 @@ namespace Emma.WeChat.Utils
         private readonly WeChatOptions options;
         private TokenManager manager;
 
-        public WeChatHttpClient(HttpClient httpClient, WeChatOptions options)
+        public WeChatHttpClient(HttpClient httpClient, IOptions<WeChatOptions> options)
         {
             this.httpClient = httpClient;
-            if (options.Events == null)
-            {
-                options.Events = new WeChatRequestEvents();
-            }
-            this.options = options;
+            this.options = options.Value;
         }
 
         public async Task<T> PostAsync<T>(string url, WeChatRequestData data) where T : WeChatResponseResult
