@@ -26,4 +26,9 @@ namespace Emma.WeChat
             }
         }
     }
+
+    public class WeChatRequestData
+    {
+
+    }
 }

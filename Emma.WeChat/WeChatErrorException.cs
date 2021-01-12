@@ -16,6 +16,7 @@ namespace Emma.WeChat
         {
             this.ErrorCode = errcode;
         }
+
     }
 
 

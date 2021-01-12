@@ -1,5 +1,6 @@
 using Emma.WeChat;
 using Emma.WeChat.Messages.TemplateMessages;
+using Emma.WeChat.Messages.TemplateMessages.RequestModels;
 using GwlUrm.Test;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -21,14 +22,16 @@ namespace NUnitTest
         public async Task GetTokenAsyncTest()
         {
             var tm = services.GetRequiredService<TokenManager>();
-            var token = await tm.GetTokenAsync();
         }
 
         [Test]
         public async Task SendMessageAsyncTest()
         {
-            var manager = services.GetRequiredService<TemplateMessageManager>();
-            var result = await manager.SendMessageAsync("кнаж");
+            var manager1 = services.GetRequiredService<TemplateMessageManager>();
+            var manager2 = services.GetRequiredService<TemplateMessageManager>();
+            manager2.ReSetAppConfig(new AppConfig() { AppId = "xxx", AppSecret = "xxxx" });
+            var result = await manager1.SendMessageAsync(new SendMessageRequestData());
+            var result2 = await manager2.SendMessageAsync(new SendMessageRequestData());
         }
     }
 }

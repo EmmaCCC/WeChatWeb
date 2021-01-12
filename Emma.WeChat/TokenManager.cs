@@ -1,36 +1,46 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using Emma.WeChat.Utils;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Emma.WeChat
 {
-    public class TokenManager
+    public class TokenManager : WeChatManager
     {
-        protected readonly IConfiguration configuration;
-        protected readonly IHttpClientFactory httpClientFactory;
-        protected readonly HttpClient httpClient;
+        protected readonly WeChatHttpClient httpClient;
+
         private const string URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
-        public TokenManager(IConfiguration configuration, IHttpClientFactory httpClientFactory)
+        public TokenManager(WeChatHttpClient httpClient, AppConfig config) : base()
         {
-            this.configuration = configuration;
-            this.httpClientFactory = httpClientFactory;
-            this.httpClient = httpClientFactory.CreateClient();
+            httpClient.SetManager(this);
+            this.httpClient = httpClient;
+            this.Config = config;
+            this.GetTokenAsync().Wait();
         }
 
-        public async Task<WeChatToken> GetTokenAsync()
+        private async Task GetTokenAsync()
         {
-            var appid = configuration["WeChat:AppId"];
-            var secret = configuration["WeChat:AppSecret"];
+            var appid = Config.AppId;
+            var secret = Config.AppSecret;
             var url = string.Format(URL, appid, secret);
             var result = await httpClient.GetAsync<WeChatTokenReponseResult>(url);
-            return new WeChatToken()
+            var token = new WeChatToken()
             {
                 access_token = result.access_token,
                 expires_in = result.expires_in
             };
+            this.Token = token;
         }
+        public void ReSetAppConfig(AppConfig config)
+        {
+            this.Config = config;
+            this.GetTokenAsync().Wait();
+        }
+    }
+
+    public class WeChatManager
+    {
+        public WeChatToken Token { get; protected set; }
+        public AppConfig Config { get; protected set; }
     }
 
     public class WeChatTokenReponseResult : WeChatResponseResult
