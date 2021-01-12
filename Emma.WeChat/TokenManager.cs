@@ -11,25 +11,33 @@ namespace Emma.WeChat
         public AppConfig Config { get; protected set; }
 
         private const string URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
-        public TokenManager(WeChatHttpClient httpClient, AppConfig config)
+        private readonly WeChatOptions options;
+
+        public TokenManager(WeChatHttpClient httpClient, AppConfig config,
+            WeChatOptions options)
         {
             this.httpClient = httpClient;
             this.Config = config;
+            this.options = options;
             this.GetTokenAsync().Wait();
         }
 
         private async Task GetTokenAsync()
         {
-            var appid = Config.AppId;
-            var secret = Config.AppSecret;
-            var url = string.Format(URL, appid, secret);
-            var result = await httpClient.GetAsync<WeChatTokenReponseResult>(url);
-            var token = new WeChatToken()
+            var token = await options.TokenStore.GetTokenAsync(Config);
+            if(token == null)
             {
-                access_token = result.access_token,
-                expires_in = result.expires_in
-            };
-            this.Token = token;
+                var url = string.Format(URL, Config.AppId, Config.AppSecret);
+                var result = await httpClient.GetAsync<WeChatTokenReponseResult>(url);
+                token = new WeChatToken()
+                {
+                    access_token = result.access_token,
+                    expires_in = result.expires_in
+                };
+                this.Token = token;
+                await options.TokenStore.SaveTokenAsync(Config, token);
+            }
+           
         }
         public void ReSetAppConfig(AppConfig config)
         {

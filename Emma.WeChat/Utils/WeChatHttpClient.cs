@@ -36,7 +36,8 @@ namespace Emma.WeChat.Utils
                 Manager = manager
             });
 
-            var json = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var str = JsonSerializer.Serialize(data,data.GetType());
+            var json = new StringContent(str, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(url, json);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsObjectAsync<T>();

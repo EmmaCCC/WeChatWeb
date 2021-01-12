@@ -14,6 +14,7 @@ namespace Emma.WeChat
     {
         public bool ThrowExceptionIfError { get; set; }
         public WeChatRequestEvents Events { get; set; } = new WeChatRequestEvents();
+        public ITokenStore TokenStore { get; set; } = new DefaultTokenStore();
     }
 
 }
