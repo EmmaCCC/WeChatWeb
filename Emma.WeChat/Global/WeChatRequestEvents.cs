@@ -29,7 +29,7 @@ namespace Emma.WeChat.Global
 
         public HttpMethod HttpMethod { get; set; }
 
-        public WeChatManager Manager { get; set; }
+        public TokenManager Manager { get; set; }
     }
 
     public class WeChatRequestExecutedContext: WeChatRequestExecutingContext

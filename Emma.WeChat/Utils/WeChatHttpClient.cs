@@ -13,7 +13,7 @@ namespace Emma.WeChat.Utils
     {
         private readonly HttpClient httpClient;
         private readonly WeChatOptions options;
-        private WeChatManager manager;
+        private TokenManager manager;
 
         public WeChatHttpClient(HttpClient httpClient, WeChatOptions options)
         {
@@ -87,7 +87,7 @@ namespace Emma.WeChat.Utils
             return result;
         }
 
-        internal void SetManager(WeChatManager manager)
+        internal void SetManager(TokenManager manager)
         {
             this.manager = manager;
         }

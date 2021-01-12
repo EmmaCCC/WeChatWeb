@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Emma.WeChat.Messages.TemplateMessages
 {
-    public class TemplateMessageManager : TokenManager
+    public class TemplateMessageManager : WeChatManager
     {
         private const string SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}";
 
-        public TemplateMessageManager(WeChatHttpClient httpClient, AppConfig config) : base(httpClient, config)
+        public TemplateMessageManager(TokenManager tokenManager) : base(tokenManager)
         {
 
         }
 
         public async Task<SendMessageResponseResult> SendMessageAsync(SendMessageRequestData data)
         {
-            var url = string.Format(SEND_URL, Token.access_token);
+            var url = string.Format(SEND_URL, tokenManager.Token.access_token);
 
             data = new SendMessageRequestData()
             {

@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 
 namespace Emma.WeChat
 {
-    public class TokenManager : WeChatManager
+    public class TokenManager 
     {
-        protected readonly WeChatHttpClient httpClient;
+        public WeChatHttpClient httpClient { get; protected set; }
+        public WeChatToken Token { get; protected set; }
+        public AppConfig Config { get; protected set; }
 
         private const string URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
-        public TokenManager(WeChatHttpClient httpClient, AppConfig config) : base()
+        public TokenManager(WeChatHttpClient httpClient, AppConfig config)
         {
-            httpClient.SetManager(this);
             this.httpClient = httpClient;
             this.Config = config;
             this.GetTokenAsync().Wait();
@@ -39,8 +40,20 @@ namespace Emma.WeChat
 
     public class WeChatManager
     {
-        public WeChatToken Token { get; protected set; }
-        public AppConfig Config { get; protected set; }
+        protected readonly TokenManager tokenManager;
+        protected readonly WeChatHttpClient httpClient;
+
+        public WeChatManager(TokenManager tokenManager)
+        {
+            this.tokenManager = tokenManager;
+            this.httpClient = tokenManager.httpClient;
+            this.httpClient.SetManager(tokenManager);
+        }
+
+        public void ReSetAppConfig(AppConfig config)
+        {
+            this.tokenManager.ReSetAppConfig(config);
+        }
     }
 
     public class WeChatTokenReponseResult : WeChatResponseResult
