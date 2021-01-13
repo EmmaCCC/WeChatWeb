@@ -10,7 +10,7 @@ namespace Emma.WeChat.Global
     internal class LocalFileTokenStore : ITokenStore
     {
         private const string TOKN_FILE = "token.txt";
-        public Task<WeChatToken> GetTokenAsync(AppConfig config)
+        public async Task<WeChatToken> GetTokenAsync(AppConfig config)
         {
             if (File.Exists(TOKN_FILE))
             {
@@ -18,25 +18,29 @@ namespace Emma.WeChat.Global
                 if (!string.IsNullOrEmpty(text))
                 {
                     var splits = text.Split(',');
-                    var token = splits[1];
+
                     var time = Convert.ToDateTime(splits[0]);
                     if (time < DateTime.Now)
                     {
                         return null;
                     }
-                    return Task.FromResult(new WeChatToken()
+                    var token = splits[1];
+                    var expire = int.Parse(splits[2]);
+                    return new WeChatToken()
                     {
-                        access_token = token
-                    });
+                        access_token = token,
+                        expires_in = expire
+                    };
                 }
             }
-            return Task.FromResult<WeChatToken>(null);
+            await Task.CompletedTask;
+            return null;
         }
 
         public Task SaveTokenAsync(AppConfig config, WeChatToken token)
         {
             var expireTime = DateTime.Now.AddSeconds(token.expires_in);
-            var text = $"{expireTime},{token.access_token}";
+            var text = $"{expireTime},{token.access_token},{token.expires_in}";
             File.WriteAllText(TOKN_FILE, text);
             return Task.CompletedTask;
         }

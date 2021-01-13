@@ -19,6 +19,4 @@ namespace Emma.WeChat.Messages.TemplateMessages.RequestModels
         public string pagepath { get; set; }
     }
 
-
-
 }

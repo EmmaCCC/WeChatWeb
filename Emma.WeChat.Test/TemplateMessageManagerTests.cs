@@ -24,7 +24,7 @@ namespace Emma.WeChat.Test
             var result = await manager.SendMessageAsync(new SendMessageRequestData()
             {
                 touser = "o9utb54nn_aLeeO9XxjFJm673duw",
-                template_id = "j3mvve7Xyz9oLhNOdy5nNgNgeZjKbPEwyL5O1bG2-cc",
+                template_id = "zbWjzNEHfZso_famo-eH1f1kP5CQIf8ORw8Hg0aOqWQ",
                 data = new
                 {
                     sender = new
@@ -48,6 +48,12 @@ namespace Emma.WeChat.Test
         public async Task GetTemplateMessageListAsyncTest()
         {
             var result = await manager.GetTemplateMessageListAsync();
+        }
+
+        [Test]
+        public async Task DeleteMessageAsyncTest()
+        {
+            var result = await manager.DeleteMessageAsync(new DeleteMessageRequestData() {  template_id = "j3mvve7Xyz9oLhNOdy5nNgNgeZjKbPEwyL5O1bG2-cc" });
         }
     }
 }
