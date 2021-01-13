@@ -23,7 +23,7 @@ namespace Emma.WeChat
             AddWeChatServices(services, opts =>
             {
                 opts.Events = new WeChatRequestEvents();
-                opts.TokenStore = new DefaultTokenStore();
+                opts.TokenStore = new LocalFileTokenStore();
                 opts.AppConfig = new AppConfig() { AppId = appId, AppSecret = secret };
             });
         }

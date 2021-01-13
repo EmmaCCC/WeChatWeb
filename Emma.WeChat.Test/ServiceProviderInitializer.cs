@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Extensions.Hosting;
 using WeChatWeb;
 
-namespace GwlUrm.Test
+namespace Emma.WeChat.Test
 {
     public class ServiceProviderInitializer
     {

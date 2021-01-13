@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Emma.WeChat.Test</AssemblyName>
+
+    <RootNamespace>Emma.WeChat.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

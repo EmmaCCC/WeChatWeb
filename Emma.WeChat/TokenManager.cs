@@ -34,10 +34,10 @@ namespace Emma.WeChat
                     access_token = result.access_token,
                     expires_in = result.expires_in
                 };
-                this.Token = token;
+             
                 await options.TokenStore.SaveTokenAsync(Config, token);
             }
-
+            this.Token = token;
         }
         public void ReSetAppConfig(AppConfig config)
         {
