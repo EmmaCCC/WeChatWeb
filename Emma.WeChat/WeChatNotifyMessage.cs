@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 
 namespace Emma.WeChat
 {
-    [XmlRoot("xml")]
     public class WeChatNotifyMessage
     {
         public string MsgType { get; set; }

@@ -21,7 +21,15 @@ namespace WeChatWeb
         {
             services.AddControllers().AddXmlSerializerFormatters();
 
-            services.AddWeChatServices(Configuration["WeChat:AppId"], Configuration["WeChat:AppSecret"]);
+            services.AddWeChatServices(opts =>
+            {
+                opts.NotifyUrl = "/wechat/notify";
+                opts.AppConfig = new AppConfig()
+                {
+                    AppId = Configuration["WeChat:AppId"],
+                    AppSecret = Configuration["WeChat:AppSecret"],
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +39,8 @@ namespace WeChatWeb
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseWeChat();
 
             app.UseHttpsRedirection();
 

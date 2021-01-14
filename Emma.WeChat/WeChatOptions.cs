@@ -16,6 +16,7 @@ namespace Emma.WeChat
         public WeChatRequestEvents Events { get; set; }
         public ITokenStore TokenStore { get; set; } 
         public AppConfig AppConfig { get; set; }
+        public string NotifyUrl { get; set; }
     }
 
 }
