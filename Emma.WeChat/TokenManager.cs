@@ -1,4 +1,5 @@
-﻿using Emma.WeChat.Utils;
+﻿using Emma.WeChat.Global;
+using Emma.WeChat.Utils;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,19 +13,20 @@ namespace Emma.WeChat
         public AppConfig Config { get; protected set; }
 
         private const string URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
-        private readonly WeChatOptions options;
+        private readonly ITokenStore tokenStore;
 
-        public TokenManager(WeChatHttpClient httpClient, IOptions<WeChatOptions> options)
+        public TokenManager(WeChatHttpClient httpClient, IOptions<WeChatOptions> options,
+            ITokenStore tokenStore)
         {
             this.httpClient = httpClient;
+            this.tokenStore = tokenStore;
             this.Config = options.Value.AppConfig;
-            this.options = options.Value;
             this.GetTokenAsync().Wait();
         }
 
         private async Task GetTokenAsync()
         {
-            var token = await options.TokenStore.GetTokenAsync(Config);
+            var token = await tokenStore.GetTokenAsync(Config);
             if (token == null)
             {
                 var url = string.Format(URL, Config.AppId, Config.AppSecret);
@@ -35,7 +37,7 @@ namespace Emma.WeChat
                     expires_in = result.expires_in
                 };
              
-                await options.TokenStore.SaveTokenAsync(Config, token);
+                await tokenStore.SaveTokenAsync(Config, token);
             }
             this.Token = token;
         }

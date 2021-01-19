@@ -10,18 +10,9 @@ namespace Emma.WeChat.Messages.NotifyMessages
 {
     public class DefaultMessageNotifier : IMessageNotifier
     {
-        public Task OnCommonMessage(CommonMessageContext context)
-        {
-            var msg = JsonSerializer.Serialize(context.Message, context.Message.GetType());
-            context.HttpContext.Response.WriteAsync(msg);
-            return Task.CompletedTask;
-        }
+        public Task OnCommonMessage(CommonMessageContext context) => Task.CompletedTask;
 
-        public Task OnEventMessage(EventMessageContext context)
-        {
-            var msg = JsonSerializer.Serialize(context.Message);
-            context.HttpContext.Response.WriteAsync(msg);
-            return Task.CompletedTask;
-        }
+        public Task OnEventMessage(EventMessageContext context) => Task.CompletedTask;
+
     }
 }

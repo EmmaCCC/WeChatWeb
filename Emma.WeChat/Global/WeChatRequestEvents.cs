@@ -8,16 +8,9 @@ namespace Emma.WeChat.Global
 {
     public class WeChatRequestEvents
     {
-        public virtual Task OnRequestExecuting(WeChatRequestExecutingContext context)
-        {
-            return Task.CompletedTask;
-        }
+        public virtual Task OnRequestExecuting(WeChatRequestExecutingContext context) => Task.CompletedTask;
 
-        public virtual Task OnRequestExecuted(WeChatRequestExecutedContext context)
-        {
-            return Task.CompletedTask;
-        }
-
+        public virtual Task OnRequestExecuted(WeChatRequestExecutedContext context) => Task.CompletedTask;
 
     }
 
