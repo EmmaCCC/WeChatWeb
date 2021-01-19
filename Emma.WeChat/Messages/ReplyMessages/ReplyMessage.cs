@@ -59,10 +59,10 @@ namespace Emma.WeChat.Messages.ReplyMessages
                 {
                     var propType = item.PropertyType;
                     var propXml = doc.OwnerDocument.CreateElement(item.Name);
+                    doc.AppendChild(propXml);
                     if (propType.IsClass && propType != typeof(string))
                     {
-                        var ele = CreateXml(doc, item.GetValue(o));
-                        doc.OwnerDocument.AppendChild(ele);
+                        CreateXml(propXml, item.GetValue(o));
                     }
                     else
                     {
