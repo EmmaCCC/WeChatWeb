@@ -26,7 +26,7 @@ namespace Emma.WeChat.Test
                 }
             };
 
-            var doc = msg.ToXml(msg);
+            var doc = msg.ToXml();
             var inner = doc.InnerXml;
         }
 
