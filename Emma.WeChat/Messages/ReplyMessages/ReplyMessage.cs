@@ -14,38 +14,12 @@ namespace Emma.WeChat.Messages.ReplyMessages
         public string FromUserName { get; set; }
         public string CreateTime { get; set; }
 
-        public virtual XmlDocument ToXml()
+        public XmlDocument ToXml()
         {
             XmlDocument doc = new XmlDocument();
             var xml = doc.CreateElement("xml");
             doc.AppendChild(xml);
-            var toUserName = doc.CreateElement("FromUserName");
-            var cdata = doc.CreateCDataSection(ToUserName);
-            toUserName.AppendChild(cdata);
-            xml.AppendChild(toUserName);
-
-            var fromUserName = doc.CreateElement("ToUserName");
-            cdata = doc.CreateCDataSection(FromUserName);
-            fromUserName.AppendChild(cdata);
-            xml.AppendChild(fromUserName);
-
-            var createTime = doc.CreateElement("CreateTime");
-            createTime.InnerText = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-            xml.AppendChild(createTime);
-
-            var msgType = doc.CreateElement("MsgType");
-            cdata = doc.CreateCDataSection(MsgType);
-            msgType.AppendChild(cdata);
-            xml.AppendChild(msgType);
-            return doc;
-        }
-
-        public XmlDocument ToXml(object o)
-        {
-            XmlDocument doc = new XmlDocument();
-            var xml = doc.CreateElement("xml");
-            doc.AppendChild(xml);
-            doc.AppendChild(CreateXml(doc.DocumentElement, o));
+            doc.AppendChild(CreateXml(doc.DocumentElement, this));
             return doc;
         }
 
