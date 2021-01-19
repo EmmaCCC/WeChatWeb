@@ -1,5 +1,6 @@
 using Emma.WeChat;
 using Emma.WeChat.Messages.NotifyMessages;
+using Emma.WeChat.Messages.ReplyMessages;
 using Emma.WeChat.Messages.TemplateMessages;
 using Emma.WeChat.Messages.TemplateMessages.RequestModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,18 +16,18 @@ namespace Emma.WeChat.Test
         [Test]
         public async Task NotifyMessageHandlerTest()
         {
-            NotifyMessageHandler handler = new NotifyMessageHandler();
-            await handler.HandleMessage(new NotifyMessageContext()
+            ReplyMessage msg = new ReplyImageMessage()
             {
-                Body = $@"<xml>
-                          <ToUserName><![CDATA[toUser]]></ToUserName>
-                          <FromUserName><![CDATA[fromUser]]></FromUserName>
-                          <CreateTime>1348831860</CreateTime>
-                          <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA[this is a test]]></Content>
-                          <MsgId>1234567890123456</MsgId>
-                        </xml>"
-            });
+                ToUserName = "sfsd",
+                FromUserName = "sdfsf",
+                Image = new Image()
+                {
+                     MediaId = "123123131"
+                }
+            };
+
+            var doc = msg.ToXml(msg);
+            var inner = doc.InnerXml;
         }
 
 

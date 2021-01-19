@@ -1,5 +1,7 @@
-﻿using Emma.WeChat.Messages.NotifyMessages;
+﻿using Emma.WeChat.Extensions;
+using Emma.WeChat.Messages.NotifyMessages;
 using Emma.WeChat.Messages.NotifyMessages.CommonMessages;
+using Emma.WeChat.Messages.ReplyMessages;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,14 @@ namespace WeChatWeb
     {
         public Task OnCommonMessage(CommonMessageContext context)
         {
-            var msg = JsonSerializer.Serialize(context.Message, context.Message.GetType());
-            context.HttpContext.Response.WriteAsync(msg);
+            var doc = new ReplyMessage()
+            {
+                CreateTime = "123",
+                FromUserName = "sn",
+                MsgType = "text",
+                ToUserName = "ls"
+            }.ToXml();
+            context.HttpContext.Response.WriteXmlAsync(doc);
             return Task.CompletedTask;
         }
 
