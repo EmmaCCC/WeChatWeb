@@ -1,4 +1,5 @@
 ﻿using Emma.WeChat.Global;
+using Emma.WeChat.Messages.NotifyMessages;
 using Emma.WeChat.Messages.TemplateMessages;
 using Emma.WeChat.Utils;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +22,8 @@ namespace Emma.WeChat
         {
             var opts = app.ApplicationServices.GetRequiredService<IOptions<WeChatOptions>>().Value;
 
+            var messageHandler = app.ApplicationServices.GetRequiredService<NotifyMessageHandler>();
+
             app.Map(opts.NotifyUrl, ap =>
             {
                 ap.Use(async (context, next) =>
@@ -32,9 +35,13 @@ namespace Emma.WeChat
                     {
                         var body = await reader.ReadToEndAsync();
 
-                        XmlSerializer serializer = new XmlSerializer(typeof(WeChatNotifyMessage), new XmlRootAttribute("xml"));
-                        var message = serializer.Deserialize(new StringReader(body));
-                    
+                        await messageHandler.HandleMessageAsync(new NotifyMessageContext()
+                        {
+                            Body = body,
+                            HttpContext = context,
+                            WeChatOptions = opts
+                        });
+
                         request.Body.Position = 0;
                     }
                 });

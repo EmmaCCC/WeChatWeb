@@ -1,4 +1,4 @@
-﻿using Emma.WeChat;
+﻿using Emma.WeChat.Messages.NotifyMessages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;

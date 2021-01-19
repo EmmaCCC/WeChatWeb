@@ -1,4 +1,5 @@
 ﻿using Emma.WeChat.Global;
+using Emma.WeChat.Messages.NotifyMessages;
 using Emma.WeChat.Messages.TemplateMessages;
 using Emma.WeChat.Utils;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,10 +13,13 @@ namespace Emma.WeChat
     {
         public static void AddWeChatServices(this IServiceCollection services, Action<WeChatOptions> opts)
         {
+            services.Configure(opts);
+
+            services.AddSingleton<IMessageNotifier, DefaultMessageNotifier>();
+            services.AddSingleton<NotifyMessageHandler>();
             services.AddTransient<TokenManager>();
             services.AddTransient<TemplateMessageManager>();
             services.AddHttpClient<WeChatHttpClient>();
-            services.Configure(opts);
         }
 
         public static void AddWeChatServices(this IServiceCollection services, string appId, string secret)
@@ -26,6 +30,7 @@ namespace Emma.WeChat
                 opts.TokenStore = new LocalFileTokenStore();
                 opts.AppConfig = new AppConfig() { AppId = appId, AppSecret = secret };
             });
+
         }
     }
 }

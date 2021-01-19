@@ -14,9 +14,11 @@ namespace Emma.WeChat
     {
         public bool ThrowExceptionIfError { get; set; }
         public WeChatRequestEvents Events { get; set; }
-        public ITokenStore TokenStore { get; set; } 
+        public ITokenStore TokenStore { get; set; }
         public AppConfig AppConfig { get; set; }
         public string NotifyUrl { get; set; }
+
+        public Type TokenStoreType { get; set; } = typeof(LocalFileTokenStore);
     }
 
 }
