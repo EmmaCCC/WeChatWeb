@@ -25,7 +25,7 @@ namespace Emma.WeChat.Messages.NotifyMessages
                 return notifier.OnCheckMessage(new CheckMessageContext()
                 {
                     HttpContext = context.HttpContext,
-                    WeChatOptions = context.WeChatOptions
+                    AppConfig = context.AppConfig
                 });
             }
             return ParseMessageAsync(context);
@@ -49,7 +49,7 @@ namespace Emma.WeChat.Messages.NotifyMessages
                 {
                     Body = context.Body,
                     HttpContext = context.HttpContext,
-                    WeChatOptions = context.WeChatOptions,
+                    AppConfig = context.AppConfig,
                     MsgType = msgType
                 };
 
@@ -67,7 +67,7 @@ namespace Emma.WeChat.Messages.NotifyMessages
                 {
                     Body = context.Body,
                     HttpContext = context.HttpContext,
-                    WeChatOptions = context.WeChatOptions,
+                    AppConfig = context.AppConfig,
                     Event = evt
                 };
 

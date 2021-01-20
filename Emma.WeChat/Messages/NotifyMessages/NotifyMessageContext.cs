@@ -8,7 +8,7 @@ namespace Emma.WeChat.Messages.NotifyMessages
     public class NotifyMessageContext
     {
         public HttpContext HttpContext { get; set; }
-        public WeChatOptions WeChatOptions { get; set; }
+        public AppConfig AppConfig { get; set; }
         public string Body { get; set; }
     }
 }

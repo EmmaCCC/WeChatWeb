@@ -12,7 +12,7 @@ namespace Emma.WeChat.Messages.NotifyMessages
         //默认实现
         async Task OnCheckMessage(CheckMessageContext context)
         {
-            await WeChatCheck.CheckSign(context.WeChatOptions, context.HttpContext);
+            await WeChatCheck.CheckSign(context.AppConfig, context.HttpContext);
         }
         Task OnCommonMessage(CommonMessageContext context);
         Task OnEventMessage(EventMessageContext context);

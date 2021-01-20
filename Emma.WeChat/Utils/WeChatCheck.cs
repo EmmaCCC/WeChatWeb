@@ -9,14 +9,14 @@ namespace Emma.WeChat.Utils
 {
     public class WeChatCheck
     {
-        public static async Task<bool> CheckSign(WeChatOptions options, HttpContext context)
+        public static async Task<bool> CheckSign(AppConfig config, HttpContext context)
         {
             var query = context.Request.Query;
             var signature = query["signature"];
             var timestamp = query["timestamp"];
             var nonce = query["nonce"];
             var echostr = query["echostr"];
-            var token = options.AppConfig.Token;
+            var token = config.Token;
 
             var list = new List<string>();
             list.Add(token);

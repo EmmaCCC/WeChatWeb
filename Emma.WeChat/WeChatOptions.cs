@@ -7,6 +7,7 @@ namespace Emma.WeChat
 {
     public class AppConfig
     {
+        public string AppName { get; set; }
         public string AppId { get; set; }
         public string AppSecret { get; set; }
         public string Url { get; set; }
@@ -16,7 +17,7 @@ namespace Emma.WeChat
     public class WeChatOptions
     {
         public bool ThrowExceptionIfError { get; set; }
-        public AppConfig AppConfig { get; set; }
+        public List<AppConfig> AppConfigs { get; set; } = new List<AppConfig>();
     }
 
 }

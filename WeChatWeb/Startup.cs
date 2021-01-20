@@ -23,14 +23,15 @@ namespace WeChatWeb
 
             services.AddWeChat(opts =>
             {
-                opts.AppConfig = new AppConfig()
+                opts.AppConfigs.Add(new AppConfig()
                 {
+                    AppName = "学生公众号",
                     AppId = Configuration["WeChat:AppId"],
                     AppSecret = Configuration["WeChat:AppSecret"],
-                    Url = "/wechat/notify",
-                    Token = "dsahlfahfwire",
-                    EncodingAESKey = "%@^#(&(#"
-                };
+                    Url = "/wechat/notify2",
+                    Token = "222222222",
+                    EncodingAESKey = "3333333"
+                });
             })
             .AddMessageNotifier<MyWeChatNotifier>()
             .AddRequestFilter<MyWeChatRequestFilter>();

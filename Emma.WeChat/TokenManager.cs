@@ -2,6 +2,7 @@
 using Emma.WeChat.Global;
 using Emma.WeChat.Utils;
 using Microsoft.Extensions.Options;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,14 +16,16 @@ namespace Emma.WeChat
         public AppConfig Config { get; protected set; }
 
         private const string URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
+        private readonly IOptions<WeChatOptions> options;
         private readonly ITokenStore tokenStore;
 
         public TokenManager(WeChatHttpClient httpClient, IOptions<WeChatOptions> options,
             ITokenStore tokenStore)
         {
             this.httpClient = httpClient;
+            this.options = options;
             this.tokenStore = tokenStore;
-            this.Config = options.Value.AppConfig;
+            this.Config = options.Value.AppConfigs.First();
             this.GetTokenAsync().Wait();
         }
 
@@ -43,10 +46,15 @@ namespace Emma.WeChat
             }
             this.Token = token;
         }
-        public void ReSetAppConfig(AppConfig config)
+        public void SelectAppConfig(AppConfigSelect select)
         {
-            this.Config = config;
-            this.GetTokenAsync().Wait();
+            var config = options.Value.AppConfigs.FirstOrDefault(a => a.AppId == select.AppId
+            || a.AppName == select.AppName);
+            if (config != null)
+            {
+                this.Config = config;
+                this.GetTokenAsync().Wait();
+            }
         }
     }
 
@@ -62,9 +70,9 @@ namespace Emma.WeChat
             this.httpClient.SetManager(tokenManager);
         }
 
-        public void ReSetAppConfig(AppConfig config)
+        public void SelectAppConfig(AppConfigSelect config)
         {
-            this.tokenManager.ReSetAppConfig(config);
+            this.tokenManager.SelectAppConfig(config);
         }
     }
 
@@ -78,5 +86,11 @@ namespace Emma.WeChat
     {
         public string access_token { get; set; }
         public int expires_in { get; set; }
+    }
+
+    public class AppConfigSelect
+    {
+        public string AppName { get; set; }
+        public string AppId { get; set; }
     }
 }
