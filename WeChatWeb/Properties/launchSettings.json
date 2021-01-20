@@ -19,7 +19,7 @@
     },
     "WeChatWeb": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "weatherforecast",
       "applicationUrl": "https://localhost:44323;http://localhost:44322",
       "environmentVariables": {

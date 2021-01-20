@@ -9,7 +9,7 @@ namespace Emma.WeChat.Messages.ReplyMessages
     {
         public ReplyTextMessage()
         {
-            this.MsgType = MsgTypes.Text;
+            this.MsgType = ReplyMsgTypes.Text;
         }
         public string Content { get; set; }
     }

@@ -15,13 +15,18 @@ namespace WeChatWeb
     {
         public Task OnCommonMessage(CommonMessageContext context)
         {
-            var doc = new ReplyMessage()
+            var doc = new ReplyImageMessage()
             {
                 CreateTime = "123",
                 FromUserName = "sn",
                 MsgType = "text",
-                ToUserName = "ls"
-            }.ToXml();
+                ToUserName = "ls",
+                Image = new Image()
+                {
+                    MediaId = "12313"
+                }
+
+            }.CreateXml();
             context.HttpContext.Response.WriteXmlAsync(doc);
             return Task.CompletedTask;
         }

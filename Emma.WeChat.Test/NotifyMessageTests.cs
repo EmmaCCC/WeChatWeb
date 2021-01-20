@@ -1,4 +1,5 @@
 using Emma.WeChat;
+using Emma.WeChat.Extensions;
 using Emma.WeChat.Messages.NotifyMessages;
 using Emma.WeChat.Messages.ReplyMessages;
 using Emma.WeChat.Messages.TemplateMessages;
@@ -6,7 +7,9 @@ using Emma.WeChat.Messages.TemplateMessages.RequestModels;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Emma.WeChat.Test
 {
@@ -16,18 +19,23 @@ namespace Emma.WeChat.Test
         [Test]
         public async Task NotifyMessageHandlerTest()
         {
-            ReplyMessage msg = new ReplyImageMessage()
+            var msg = new ReplyPicTextMessage()
             {
                 ToUserName = "sfsd",
                 FromUserName = "sdfsf",
-                Image = new Image()
+                CreateTime = "123",
+                ArticleCount = 1,
+                Articles = new List<Article>()
                 {
-                     MediaId = "123123131"
+                    new Article(){ Description = "xxxx"}
                 }
+
             };
 
-            var doc = msg.ToXml();
-            var inner = doc.InnerXml;
+            //var doc = msg.ToXml();
+            var str = msg.CreateXml();
+            var s = str.ToString(SaveOptions.DisableFormatting);
+            //var inner = doc.InnerXml;
         }
 
 

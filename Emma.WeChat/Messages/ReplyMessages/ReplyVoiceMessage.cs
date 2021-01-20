@@ -11,7 +11,7 @@ namespace Emma.WeChat.Messages.ReplyMessages
 
         public ReplyVoiceMessage()
         {
-            this.MsgType = MsgTypes.Voice;
+            this.MsgType = ReplyMsgTypes.Voice;
         }
     }
 
