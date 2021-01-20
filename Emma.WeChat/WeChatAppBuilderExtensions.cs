@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Emma.WeChat
@@ -16,7 +19,7 @@ namespace Emma.WeChat
 
             var messageHandler = app.ApplicationServices.GetRequiredService<NotifyMessageHandler>();
 
-            app.Map(opts.NotifyUrl, ap =>
+            app.Map(opts.Url, ap =>
             {
                 ap.Use(async (context, next) =>
                 {
@@ -39,5 +42,7 @@ namespace Emma.WeChat
                 });
             });
         }
+
+       
     }
 }

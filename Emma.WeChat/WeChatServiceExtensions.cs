@@ -27,12 +27,7 @@ namespace Emma.WeChat
         public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services, Action<WeChatOptions> opts)
         {
             services.Configure(opts);
-
-            services.PostConfigure<WeChatOptions>(opts =>
-            {
-                opts.Filter = opts.Filter ?? new WeChatRequestFilter();
-            });
-
+           
             RegisterApiManagers(services);
 
             services.AddSingleton<NotifyMessageHandler>();
@@ -48,7 +43,6 @@ namespace Emma.WeChat
         {
             return AddWeChat(services, opts =>
             {
-                opts.Filter = new WeChatRequestFilter();
                 opts.AppConfig = new AppConfig() { AppId = appId, AppSecret = secret };
             });
 

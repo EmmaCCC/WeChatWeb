@@ -18,6 +18,16 @@ namespace Emma.WeChat.Messages.NotifyMessages
 
         public Task HandleMessageAsync(NotifyMessageContext context)
         {
+            var request = context.HttpContext.Request;
+            if (string.Compare(request.Method, "get", true) == 0
+            && request.Query.ContainsKey("signature"))
+            {
+                return notifier.OnCheckMessage(new CheckMessageContext()
+                {
+                    HttpContext = context.HttpContext,
+                    WeChatOptions = context.WeChatOptions
+                });
+            }
             return ParseMessageAsync(context);
         }
 

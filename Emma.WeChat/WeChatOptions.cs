@@ -13,9 +13,10 @@ namespace Emma.WeChat
     public class WeChatOptions
     {
         public bool ThrowExceptionIfError { get; set; }
-        public WeChatRequestFilter Filter { get; set; }
         public AppConfig AppConfig { get; set; }
-        public string NotifyUrl { get; set; }
+        public string Url { get; set; }
+        public string Token { get; set; }
+        public string EncodingAESKey { get; set; }
     }
 
 }
