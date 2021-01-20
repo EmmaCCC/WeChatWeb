@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Emma.WeChat.Global
 {
-    public class WeChatRequestEvents
+    public class WeChatRequestFilter : IWeChatRequestFilter
     {
         public virtual Task OnRequestExecuting(WeChatRequestExecutingContext context) => Task.CompletedTask;
 
@@ -25,7 +25,7 @@ namespace Emma.WeChat.Global
         public TokenManager Manager { get; set; }
     }
 
-    public class WeChatRequestExecutedContext: WeChatRequestExecutingContext
+    public class WeChatRequestExecutedContext : WeChatRequestExecutingContext
     {
 
         public WeChatResponseResult ResponseResult { get; set; }

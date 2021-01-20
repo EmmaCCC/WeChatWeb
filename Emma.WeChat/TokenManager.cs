@@ -1,4 +1,5 @@
-﻿using Emma.WeChat.Global;
+﻿using Emma.WeChat.Attributes;
+using Emma.WeChat.Global;
 using Emma.WeChat.Utils;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Emma.WeChat
 {
+    [WeChatApiManager]
     public class TokenManager
     {
         public WeChatHttpClient httpClient { get; protected set; }

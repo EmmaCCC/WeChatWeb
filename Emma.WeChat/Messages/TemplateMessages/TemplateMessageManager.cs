@@ -1,4 +1,5 @@
-﻿using Emma.WeChat.Messages.TemplateMessages.RequestModels;
+﻿using Emma.WeChat.Attributes;
+using Emma.WeChat.Messages.TemplateMessages.RequestModels;
 using Emma.WeChat.Messages.TemplateMessages.ResponseResults;
 using Emma.WeChat.Utils;
 using System;
@@ -8,6 +9,7 @@ using System.Xml.Serialization;
 
 namespace Emma.WeChat.Messages.TemplateMessages
 {
+    [WeChatApiManager]
     public class TemplateMessageManager : WeChatManager
     {
         private const string SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}";

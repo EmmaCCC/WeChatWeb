@@ -1,17 +1,28 @@
-﻿using Emma.WeChat.Global;
+﻿using Emma.WeChat.Attributes;
+using Emma.WeChat.Global;
 using Emma.WeChat.Messages.NotifyMessages;
-using Emma.WeChat.Messages.TemplateMessages;
 using Emma.WeChat.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Reflection;
 
 namespace Emma.WeChat
 {
     public static class WeChatServiceExtensions
     {
+
+        private static void RegisterApiManagers(IServiceCollection services)
+        {
+            var types = Assembly.Load("Emma.WeChat").GetTypes()
+                .Where(a => a.GetCustomAttribute(typeof(WeChatApiManagerAttribute)) != null).ToList();
+
+            foreach (var type in types)
+            {
+                services.AddTransient(type);
+            }
+        }
 
         public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services, Action<WeChatOptions> opts)
         {
@@ -19,16 +30,17 @@ namespace Emma.WeChat
 
             services.PostConfigure<WeChatOptions>(opts =>
             {
-                opts.Events = opts.Events ?? new WeChatRequestEvents();
+                opts.Filter = opts.Filter ?? new WeChatRequestFilter();
             });
 
+            RegisterApiManagers(services);
+
             services.AddSingleton<NotifyMessageHandler>();
-            services.AddTransient<TokenManager>();
-            services.AddTransient<TemplateMessageManager>();
             services.AddHttpClient<WeChatHttpClient>();
 
             services.AddSingleton<IMessageNotifier, DefaultMessageNotifier>();
             services.AddSingleton<ITokenStore, LocalFileTokenStore>();
+            services.AddSingleton<IWeChatRequestFilter, WeChatRequestFilter>();
             return new WeChatServiceBuilder(services);
         }
 
@@ -36,7 +48,7 @@ namespace Emma.WeChat
         {
             return AddWeChat(services, opts =>
             {
-                opts.Events = new WeChatRequestEvents();
+                opts.Filter = new WeChatRequestFilter();
                 opts.AppConfig = new AppConfig() { AppId = appId, AppSecret = secret };
             });
 
@@ -53,6 +65,13 @@ namespace Emma.WeChat
             where T : class, IMessageNotifier
         {
             builder.Services.Replace(ServiceDescriptor.Singleton<IMessageNotifier, T>());
+            return builder;
+        }
+
+        public static IWeChatServiceBuilder AddRequestFilter<T>(this IWeChatServiceBuilder builder)
+        where T : class, IWeChatRequestFilter
+        {
+            builder.Services.Replace(ServiceDescriptor.Singleton<IWeChatRequestFilter, T>());
             return builder;
         }
     }

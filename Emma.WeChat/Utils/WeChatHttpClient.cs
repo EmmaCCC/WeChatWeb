@@ -13,19 +13,21 @@ namespace Emma.WeChat.Utils
     public class WeChatHttpClient
     {
         private readonly HttpClient httpClient;
+        private readonly IWeChatRequestFilter requestFilter;
         private readonly WeChatOptions options;
         private TokenManager manager;
 
-        public WeChatHttpClient(HttpClient httpClient, IOptions<WeChatOptions> options)
+        public WeChatHttpClient(HttpClient httpClient, IOptions<WeChatOptions> options
+            ,IWeChatRequestFilter requestFilter)
         {
             this.httpClient = httpClient;
+            this.requestFilter = requestFilter;
             this.options = options.Value;
         }
 
         public async Task<T> PostAsync<T>(string url, WeChatRequestData data) where T : WeChatResponseResult
         {
-            var events = options.Events;
-            await events.OnRequestExecuting(new WeChatRequestExecutingContext()
+            await requestFilter.OnRequestExecuting(new WeChatRequestExecutingContext()
             {
                 RequestData = data,
                 HttpMethod = HttpMethod.Post,
@@ -33,13 +35,17 @@ namespace Emma.WeChat.Utils
                 Manager = manager
             });
 
-            var str = JsonSerializer.Serialize(data,data.GetType());
+            var str = JsonSerializer.Serialize(data,data.GetType(),
+                new JsonSerializerOptions()
+                {
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                });
             var json = new StringContent(str, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(url, json);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsObjectAsync<T>();
 
-            await events.OnRequestExecuted(new WeChatRequestExecutedContext()
+            await requestFilter.OnRequestExecuted(new WeChatRequestExecutedContext()
             {
                 RequestData = data,
                 HttpResponseMessage = response,
@@ -57,8 +63,7 @@ namespace Emma.WeChat.Utils
         }
         public async Task<T> GetAsync<T>(string url) where T : WeChatResponseResult
         {
-            var events = options.Events;
-            await events.OnRequestExecuting(new WeChatRequestExecutingContext()
+            await requestFilter.OnRequestExecuting(new WeChatRequestExecutingContext()
             {
                 HttpMethod = HttpMethod.Get,
                 Url = url,
@@ -69,7 +74,7 @@ namespace Emma.WeChat.Utils
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsObjectAsync<T>();
 
-            await events.OnRequestExecuted(new WeChatRequestExecutedContext()
+            await requestFilter.OnRequestExecuted(new WeChatRequestExecutedContext()
             {
                 HttpResponseMessage = response,
                 ResponseResult = result,

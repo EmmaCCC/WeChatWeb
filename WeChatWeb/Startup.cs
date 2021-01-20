@@ -30,7 +30,8 @@ namespace WeChatWeb
                     AppSecret = Configuration["WeChat:AppSecret"],
                 };
             })
-            .AddMessageNotifier<MyWeChatNotifier>();
+            .AddMessageNotifier<MyWeChatNotifier>()
+            .AddRequestFilter<MyWeChatRequestFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
