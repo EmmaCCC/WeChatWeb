@@ -19,7 +19,7 @@ namespace Emma.WeChat
 
             var messageHandler = app.ApplicationServices.GetRequiredService<NotifyMessageHandler>();
 
-            app.Map(opts.Url, ap =>
+            app.Map(opts.AppConfig.Url, ap =>
             {
                 ap.Use(async (context, next) =>
                 {

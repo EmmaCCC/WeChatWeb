@@ -9,14 +9,14 @@ namespace Emma.WeChat
     {
         public string AppId { get; set; }
         public string AppSecret { get; set; }
+        public string Url { get; set; }
+        public string Token { get; set; }
+        public string EncodingAESKey { get; set; }
     }
     public class WeChatOptions
     {
         public bool ThrowExceptionIfError { get; set; }
         public AppConfig AppConfig { get; set; }
-        public string Url { get; set; }
-        public string Token { get; set; }
-        public string EncodingAESKey { get; set; }
     }
 
 }

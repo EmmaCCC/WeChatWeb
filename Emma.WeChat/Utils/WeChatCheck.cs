@@ -16,7 +16,7 @@ namespace Emma.WeChat.Utils
             var timestamp = query["timestamp"];
             var nonce = query["nonce"];
             var echostr = query["echostr"];
-            var token = options.Token;
+            var token = options.AppConfig.Token;
 
             var list = new List<string>();
             list.Add(token);
