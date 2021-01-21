@@ -21,10 +21,7 @@ namespace WeChatWeb
         {
             services.AddControllers();
 
-            services.AddWeChat(opts =>
-            {
-                Configuration.Bind(nameof(WeChatOptions), opts);
-            })
+            services.AddWeChat()
             .AddMessageNotifier<MyWeChatNotifier>()
             .AddRequestFilter<MyWeChatRequestFilter>();
         }
@@ -36,8 +33,6 @@ namespace WeChatWeb
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseWeChat();
 
             app.UseHttpsRedirection();
 

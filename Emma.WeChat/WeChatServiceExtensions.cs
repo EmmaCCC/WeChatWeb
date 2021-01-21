@@ -15,34 +15,8 @@ namespace Emma.WeChat
 {
     public static class WeChatServiceExtensions
     {
-
-        private static void RegisterApiManagers(IServiceCollection services)
+        public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services)
         {
-            var types = Assembly.Load("Emma.WeChat").GetTypes()
-                .Where(a => a.GetCustomAttribute(typeof(WeChatApiManagerAttribute)) != null).ToList();
-
-            foreach (var type in types)
-            {
-                services.AddTransient(type);
-            }
-        }
-
-        public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services, Action<WeChatOptions> opts = null)
-        {
-
-            services.Configure(opts);
-
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions
-                             <WeChatOptions>, WeChatOptionsValidator>());
-
-            RegisterApiManagers(services);
-
-            services.AddSingleton<NotifyMessageHandler>();
-            services.AddHttpClient<WeChatHttpClient>();
-
-            services.AddSingleton<IMessageNotifier, DefaultMessageNotifier>();
-            services.AddSingleton<ITokenStore, LocalFileTokenStore>();
-            services.AddSingleton<IWeChatRequestFilter, WeChatRequestFilter>();
             return new WeChatServiceBuilder(services);
         }
 
