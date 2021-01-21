@@ -12,7 +12,8 @@ namespace Emma.WeChat.Global
         private const string TOKN_FILE = "token.txt";
         public async Task<WeChatToken> GetTokenAsync(AppConfig config)
         {
-            if (File.Exists(TOKN_FILE))
+            var file = $"{config.AppName}_{config.AppId}_{TOKN_FILE}";
+            if (File.Exists(file))
             {
                 var text = File.ReadAllText(TOKN_FILE);
                 if (!string.IsNullOrEmpty(text))
@@ -41,7 +42,8 @@ namespace Emma.WeChat.Global
         {
             var expireTime = DateTime.Now.AddSeconds(token.expires_in);
             var text = $"{expireTime},{token.access_token},{token.expires_in}";
-            File.WriteAllText(TOKN_FILE, text);
+            var file = $"{config.AppName}_{config.AppId}_{TOKN_FILE}";
+            File.WriteAllText(file, text);
             return Task.CompletedTask;
         }
     }

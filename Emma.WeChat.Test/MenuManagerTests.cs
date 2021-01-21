@@ -73,6 +73,7 @@ namespace Emma.WeChat.Test
         [Test]
         public async Task DeleteMenuAsyncTest()
         {
+            manager.SelectAppConfig("学生公众号2");
             var result = await manager.DeleteMenuAsync();
         }
 

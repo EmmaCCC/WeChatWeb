@@ -25,12 +25,21 @@ namespace WeChatWeb
             {
                 opts.AppConfigs.Add(new AppConfig()
                 {
-                    AppName = "学生公众号",
+                    AppName = "学生公众号1",
                     AppId = Configuration["WeChat:AppId"],
                     AppSecret = Configuration["WeChat:AppSecret"],
+                    Url = "/wechat/notify1",
+                    Token = "1111111",
+                    EncodingAESKey = "1111111"
+                });
+                opts.AppConfigs.Add(new AppConfig()
+                {
+                    AppName = "学生公众号2",
+                    AppId = Configuration["WeChat:AppId"]+"two",
+                    AppSecret = Configuration["WeChat:AppSecret"],
                     Url = "/wechat/notify2",
-                    Token = "222222222",
-                    EncodingAESKey = "3333333"
+                    Token = "2222222",
+                    EncodingAESKey = "2222222"
                 });
             })
             .AddMessageNotifier<MyWeChatNotifier>()

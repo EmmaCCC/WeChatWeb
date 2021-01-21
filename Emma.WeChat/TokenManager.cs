@@ -41,15 +41,15 @@ namespace Emma.WeChat
                     access_token = result.access_token,
                     expires_in = result.expires_in
                 };
-             
+
                 await tokenStore.SaveTokenAsync(Config, token);
             }
             this.Token = token;
         }
-        public void SelectAppConfig(AppConfigSelect select)
+        public void SelectAppConfig(string nameOrId)
         {
-            var config = options.Value.AppConfigs.FirstOrDefault(a => a.AppId == select.AppId
-            || a.AppName == select.AppName);
+            var config = options.Value.AppConfigs.SingleOrDefault(a => a.AppId == nameOrId
+            || a.AppName == nameOrId);
             if (config != null)
             {
                 this.Config = config;
@@ -70,9 +70,9 @@ namespace Emma.WeChat
             this.httpClient.SetManager(tokenManager);
         }
 
-        public void SelectAppConfig(AppConfigSelect config)
+        public void SelectAppConfig(string nameOrId)
         {
-            this.tokenManager.SelectAppConfig(config);
+            this.tokenManager.SelectAppConfig(nameOrId);
         }
     }
 
@@ -88,9 +88,4 @@ namespace Emma.WeChat
         public int expires_in { get; set; }
     }
 
-    public class AppConfigSelect
-    {
-        public string AppName { get; set; }
-        public string AppId { get; set; }
-    }
 }

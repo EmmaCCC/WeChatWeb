@@ -2,8 +2,10 @@
 using Emma.WeChat.Global;
 using Emma.WeChat.Messages.NotifyMessages;
 using Emma.WeChat.Utils;
+using Emma.WeChat.Validations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -27,6 +29,8 @@ namespace Emma.WeChat
         public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services, Action<WeChatOptions> opts)
         {
             services.Configure(opts);
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions
+                             <WeChatOptions>, WeChatOptionsValidator>());
 
             RegisterApiManagers(services);
 

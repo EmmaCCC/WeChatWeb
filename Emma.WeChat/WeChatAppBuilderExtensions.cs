@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,20 @@ namespace Emma.WeChat
     {
         public static void UseWeChat(this IApplicationBuilder app)
         {
-            var opts = app.ApplicationServices.GetRequiredService<IOptions<WeChatOptions>>().Value;
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<WeChatOptions>>();
+            WeChatOptions opts = null;
+            try
+            {
+                opts = app.ApplicationServices.GetRequiredService<IOptions<WeChatOptions>>().Value;
+            }
+            catch (OptionsValidationException ex)
+            {
+                foreach (var failure in ex.Failures)
+                {
+                    logger.LogError(failure);
+                }
+                return;
+            }
 
             var messageHandler = app.ApplicationServices.GetRequiredService<NotifyMessageHandler>();
 
