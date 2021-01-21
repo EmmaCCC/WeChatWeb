@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Emma.WeChat" Version="1.0.0" />
+    <ProjectReference Include="..\Emma.WeChat\Emma.WeChat.csproj" />
   </ItemGroup>
 
 
