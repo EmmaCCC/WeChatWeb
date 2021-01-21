@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Emma.WeChat.Validations
 {
-    public class WeChatOptionsValidator : IValidateOptions<WeChatOptions>
+    internal class WeChatOptionsValidator : IValidateOptions<WeChatOptions>
     {
         public ValidateOptionsResult Validate(string name, WeChatOptions options)
         {

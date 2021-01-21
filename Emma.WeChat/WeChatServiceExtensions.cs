@@ -3,6 +3,7 @@ using Emma.WeChat.Global;
 using Emma.WeChat.Messages.NotifyMessages;
 using Emma.WeChat.Utils;
 using Emma.WeChat.Validations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
@@ -26,9 +27,11 @@ namespace Emma.WeChat
             }
         }
 
-        public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services, Action<WeChatOptions> opts)
+        public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services, Action<WeChatOptions> opts = null)
         {
+
             services.Configure(opts);
+
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions
                              <WeChatOptions>, WeChatOptionsValidator>());
 
@@ -41,15 +44,6 @@ namespace Emma.WeChat
             services.AddSingleton<ITokenStore, LocalFileTokenStore>();
             services.AddSingleton<IWeChatRequestFilter, WeChatRequestFilter>();
             return new WeChatServiceBuilder(services);
-        }
-
-        public static IWeChatServiceBuilder AddWeChat(this IServiceCollection services, string appId, string secret)
-        {
-            return AddWeChat(services, opts =>
-            {
-                opts.AppConfigs.Add(new AppConfig() { AppId = appId, AppSecret = secret });
-            });
-
         }
 
         public static IWeChatServiceBuilder AddTokenStore<T>(this IWeChatServiceBuilder builder)
