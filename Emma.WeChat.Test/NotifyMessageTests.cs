@@ -17,7 +17,7 @@ namespace Emma.WeChat.Test
     {
 
         [Test]
-        public async Task NotifyMessageHandlerTest()
+        public void CreateXmlTest()
         {
             var msg = new ReplyPicTextMessage()
             {
