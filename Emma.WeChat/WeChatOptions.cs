@@ -14,11 +14,8 @@ namespace Emma.WeChat
         public string AppId { get; set; }
         [Required]
         public string AppSecret { get; set; }
-        [Required]
         public string Url { get; set; }
-        [Required]
         public string Token { get; set; }
-        [Required]
         public string EncodingAESKey { get; set; }
     }
     public class WeChatOptions

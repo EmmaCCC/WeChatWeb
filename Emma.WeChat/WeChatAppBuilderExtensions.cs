@@ -35,28 +35,32 @@ namespace Emma.WeChat
 
             opts.AppConfigs.ForEach(item =>
             {
-                app.Map(item.Url, ap =>
+                if (!string.IsNullOrEmpty(item.Url))
                 {
-                    ap.Use(async (context, next) =>
+                    app.Map(item.Url, ap =>
                     {
-                        var request = context.Request;
-                        request.EnableBuffering();
-
-                        using (var reader = new StreamReader(request.Body, encoding: Encoding.UTF8))
+                        ap.Use(async (context, next) =>
                         {
-                            var body = await reader.ReadToEndAsync();
+                            var request = context.Request;
+                            request.EnableBuffering();
 
-                            await messageHandler.HandleMessageAsync(new NotifyMessageContext()
+                            using (var reader = new StreamReader(request.Body, encoding: Encoding.UTF8))
                             {
-                                Body = body,
-                                HttpContext = context,
-                                AppConfig = item
-                            });
+                                var body = await reader.ReadToEndAsync();
 
-                            request.Body.Position = 0;
-                        }
+                                await messageHandler.HandleMessageAsync(new NotifyMessageContext()
+                                {
+                                    Body = body,
+                                    HttpContext = context,
+                                    AppConfig = item
+                                });
+
+                                request.Body.Position = 0;
+                            }
+                        });
                     });
-                });
+                }
+                
             });
 
           

@@ -33,7 +33,7 @@ namespace Emma.WeChat.Validations
                 {
                     return ValidateOptionsResult.Fail($"第{index}个AppConfig配置错误：{validationResults.First().ErrorMessage}");
                 }
-                if (!urls.Add(config.Url))
+                if (!string.IsNullOrEmpty(config.Url) && !urls.Add(config.Url))
                 {
                     return ValidateOptionsResult.Fail($"第{index}个AppConfig配置错误：{nameof(config.Url)}不能与其他配置重复");
                 }
